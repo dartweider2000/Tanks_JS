@@ -1,0 +1,16 @@
+@import "_nullstyles";
+
+.wrapper{
+   min-height: 100%;
+   position: relative;
+}
+
+.under_canvas{
+   position: absolute;
+   top: 50%;
+   left: 50%;
+   width: 208px;
+   height: 208px;
+   background-color: red;
+   transform: translate(-50%, -50%);
+}
