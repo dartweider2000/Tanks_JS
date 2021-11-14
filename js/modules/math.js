@@ -1,10 +1,12 @@
-export { TANK_SIZE, FLAG_SIZE, BLOCK_SIZE, Mode, Vector, Key };
+export { TANK_SIZE, FLAG_SIZE, BLOCK_SIZE, SHOT_SIZE, Mode, Vector, Key };
 
 const TANK_SIZE = 16;
 
 const FLAG_SIZE = 16;
 
 const BLOCK_SIZE = 8;
+
+const SHOT_SIZE = 3;
 
 const Mode = {
    MAIN_MENU : 0,
