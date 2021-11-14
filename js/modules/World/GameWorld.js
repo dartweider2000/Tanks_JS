@@ -1,5 +1,5 @@
 import Player from "../Actors/Player.js";
-import { Key, FirstPlayerMoveKeys, SecondPlayerMoveKeys, FirstPlayerShotKey, SecondPlayerShotKey } from "../math.js";
+import { FirstPlayerMoveKeys, SecondPlayerMoveKeys, FirstPlayerShotKey, SecondPlayerShotKey } from "../math.js";
 
 export default class GameWorld{
    constructor(level, firstPlayer = null, secondPlayer = null){
@@ -17,7 +17,8 @@ export default class GameWorld{
    update(activeKeys){
       const keys = this.getPlayKeys(activeKeys);
 
-
+      this.FirstPlayer.update(this, keys.firstPlayer);
+      this.SecondPlayer.update(this, keys.secondPlayer);
    }
 
    getPlayKeys(activeKeys){
@@ -42,5 +43,13 @@ export default class GameWorld{
          keys.secondPlayer.moveKey = SecondPlayerMoveKeys.indexOf(keys.secondPlayer.moveKey);
       
       return keys;
+   }
+
+   get FirstPlayer(){
+      return this.firstPlayer;
+   }
+
+   get SecondPlayer(){
+      return this.secondPlayer;
    }
 }
