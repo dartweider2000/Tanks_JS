@@ -25,7 +25,7 @@ export default class Game{
       this.World.update(this.Keyboard.ActiveKeys);
       this.View.render(this.World);
 
-      console.log(this.Keyboard.ActiveKeys);
+      //console.log(this.Keyboard.ActiveKeys);
 
       requestAnimationFrame(this.loop);
    }

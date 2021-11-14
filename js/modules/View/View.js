@@ -2,6 +2,7 @@ import Sprite from "../Sprite.js";
 import GameView from "./GameView.js";
 import MainMenuView from "./MainMenuView.js";
 import PlayMenuView from "./PlayMenuView.js";
+import { Mode } from "../math.js";
 
 export default class View{
    constructor(canv, src){
@@ -20,12 +21,12 @@ export default class View{
    }
 
    render(world){
-      if(this.Mode == Mode.MAIN_MENU){
-         this.MainMenuWorld.render(this.CX, this.Sprite);
-      }else if(this.Mode == Mode.CAREER){
-         this.GameWorld.render(this.CX, this.Sprite);
-      }else if(this.Mode == Mode.PLAY_MENU){
-         this.PlayMenuWorld.redner(this.CX, this.Sprite);
+      if(world.Mode == Mode.MAIN_MENU){
+         this.MainMenuView.render(this.CX, this.Sprite);
+      }else if(world.Mode == Mode.CAREER){
+         this.GameView.render(this.CX, this.Sprite);
+      }else if(world.Mode == Mode.PLAY_MENU){
+         this.PlayMenuView.redner(this.CX, this.Sprite);
       }
    }
 

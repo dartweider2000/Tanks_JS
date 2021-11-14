@@ -9,7 +9,7 @@ export default class World{
       this.mainMenuWorld = new MainMenuWorld();
       this.playMenuWorld = new PlayMenuWorld();
 
-      this.mode = Mode.MAIN_MENU;
+      this.mode = Mode.CAREER;
    }
 
    update(activeKeys){

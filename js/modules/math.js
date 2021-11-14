@@ -1,4 +1,5 @@
-export { TANK_SIZE, FLAG_SIZE, BLOCK_SIZE, SHOT_SIZE, Mode, Vector, Key };
+export { TANK_SIZE, FLAG_SIZE, BLOCK_SIZE, SHOT_SIZE, Mode, Vector, Key, FirstPlayerMoveKeys, 
+   FirstPlayerShotKey, SecondPlayerMoveKeys, SecondPlayerShotKey };
 
 const TANK_SIZE = 16;
 
@@ -22,11 +23,19 @@ const Vector = {
    DOWN : 1,
    LEFT : 2,
    RIGHT : 3,
-}
+};
 
 const Key = {
    UP : 0,
    DOWN : 1,
    LEFT : 2,
    RIGHT : 3,
-}
+};
+
+const FirstPlayerMoveKeys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
+
+const FirstPlayerShotKey = 'ControlRight';
+
+const SecondPlayerMoveKeys = ['KeyW', 'KeyS', 'KeyA', 'KeyD'];
+
+const SecondPlayerShotKey = 'Space';
