@@ -3,7 +3,7 @@ export default class PlayMenuView{
 
    }
 
-   render(CX, Sprite){
+   render(World, CX, Sprite){
 
    }
 }

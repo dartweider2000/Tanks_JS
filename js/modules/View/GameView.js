@@ -3,7 +3,7 @@ export default class GameView{
 
    }
 
-   render(CX, Sprite){
-
+   render(World, CX, Sprite){
+      World.Level.render(CX, Sprite);
    }
 }

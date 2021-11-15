@@ -6,21 +6,7 @@ export default class Level_1 extends AbstractLevel{
       super();
 
       this.fakeMap = map;
-      this.spawnPlaceFirstPlayer = {"indexX" : null, "indexY" : null};
-      this.spawnPlaceSecondPlayer = {"indexX" : null, "indexY" : null};
-      this.spawnPlaceEnemies = [
-         {"indexX" : null, "indexY" : null},
-         {"indexX" : null, "indexY" : null}
-      ];
-      this.baseCoord = [
-         {"indexX" : null, "indexY" : null},
-         {"indexX" : null, "indexY" : null},
-         {"indexX" : null, "indexY" : null},
-         {"indexX" : null, "indexY" : null}
-      ];
-   }
 
-   makeMap(){
-
+      this.makeMap();
    }
 }

@@ -1,4 +1,4 @@
-export { TANK_SIZE, FLAG_SIZE, BLOCK_SIZE, SHOT_SIZE, Mode, Vector, Key, FirstPlayerMoveKeys, 
+export { TANK_SIZE, FLAG_SIZE, BLOCK_SIZE, SHOT_SIZE, Mode, Vector, Key, BrickState, FirstPlayerMoveKeys, 
    FirstPlayerShotKey, SecondPlayerMoveKeys, SecondPlayerShotKey };
 
 const TANK_SIZE = 16;
@@ -30,6 +30,15 @@ const Key = {
    DOWN : 1,
    LEFT : 2,
    RIGHT : 3,
+};
+
+const BrickState = {
+   FULL : 0,
+   UP : 1,
+   DOWN : 2,
+   LEFT : 3,
+   RIGHT : 4,
+   DEATH : 5
 };
 
 const FirstPlayerMoveKeys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];

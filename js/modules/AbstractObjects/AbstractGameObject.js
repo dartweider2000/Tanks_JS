@@ -2,7 +2,7 @@ import { BLOCK_SIZE } from "../math.js";
 
 export default class AbstractGameObject{
    constructor(indexX, indexY){
-      if(indexX && indexY){
+      if(indexX != undefined &&  indexY != undefined){
          this.x = indexX * BLOCK_SIZE;
          this.y = indexY * BLOCK_SIZE;
       }

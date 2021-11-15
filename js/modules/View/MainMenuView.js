@@ -3,7 +3,7 @@ export default class MainMenuView{
 
    }
 
-   render(CX, Sprite){
+   render(World, CX, Sprite){
       
    }
 }

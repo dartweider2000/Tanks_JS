@@ -20,13 +20,13 @@ export default class View{
       await this.sprite.init();
    }
 
-   render(world){
-      if(world.Mode == Mode.MAIN_MENU){
-         this.MainMenuView.render(this.CX, this.Sprite);
-      }else if(world.Mode == Mode.CAREER){
-         this.GameView.render(this.CX, this.Sprite);
-      }else if(world.Mode == Mode.PLAY_MENU){
-         this.PlayMenuView.redner(this.CX, this.Sprite);
+   render(World){
+      if(World.Mode == Mode.MAIN_MENU){
+         this.MainMenuView.render(World.MainMenuWorld, this.CX, this.Sprite);
+      }else if(World.Mode == Mode.CAREER){
+         this.GameView.render(World.GameWorld, this.CX, this.Sprite);
+      }else if(World.Mode == Mode.PLAY_MENU){
+         this.PlayMenuView.redner(World.PlayMenuWorld, this.CX, this.Sprite);
       }
    }
 

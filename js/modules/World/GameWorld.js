@@ -17,8 +17,8 @@ export default class GameWorld{
    update(activeKeys){
       const keys = this.getPlayKeys(activeKeys);
 
-      this.FirstPlayer.update(this, keys.firstPlayer);
-      this.SecondPlayer.update(this, keys.secondPlayer);
+      //this.FirstPlayer.update(this, keys.firstPlayer);
+      //this.SecondPlayer.update(this, keys.secondPlayer);
    }
 
    getPlayKeys(activeKeys){
@@ -51,5 +51,9 @@ export default class GameWorld{
 
    get SecondPlayer(){
       return this.secondPlayer;
+   }
+
+   get Level(){
+      return this.level;
    }
 }

@@ -2,10 +2,13 @@ import { Mode } from "../math.js";
 import GameWorld from "./GameWorld.js";
 import MainMenuWorld from "./MainMenuWorld.js";
 import PlayMenuWorld from "./PlayMenuWorld.js";
+import Levels from "../Levels/Levels.js";
 
 export default class World{
    constructor(){
-      this.gameWorld = new GameWorld();
+      this.levels = new Levels();
+
+      this.gameWorld = new GameWorld(this.getLevel(1));
       this.mainMenuWorld = new MainMenuWorld();
       this.playMenuWorld = new PlayMenuWorld();
 
@@ -20,6 +23,14 @@ export default class World{
       }else if(this.Mode == Mode.PLAY_MENU){
          this.PlayMenuWorld.update(activeKeys);
       }
+   }
+
+   getLevel(number){
+      return this.Levels.getLevel(number);
+   }
+
+   get Levels(){
+      return this.levels
    }
 
    get GameWorld(){
