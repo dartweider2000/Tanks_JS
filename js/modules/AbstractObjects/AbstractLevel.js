@@ -1,4 +1,5 @@
 import { BLOCK_SIZE } from "../math.js";
+import BlocksFactory from "../Blocks/BlocksFactory.js";
 import Brick from "../Blocks/Brick.js";
 import Grass from "../Blocks/Grass.js";
 import Road from "../Blocks/Road.js";
@@ -8,16 +9,22 @@ import Water from "../Blocks/Water.js";
 
 export default class AbstractLevel{
    constructor(){
-      this.x = 0;
-      this.y = 0;
-      this.width = 26;
-      this.height = 26;
+      this.x         = 0;
+      this.y         = 0;
+      this.width     = 26;
+      this.height    = 26;
 
-      this.fakeMap = [];
-      this.map = [];
+      this.brick     = [];
+      this.road      = [];
+      this.grass     = [];
+      this.water     = [];
+      this.flagPlace = [];
+      this.iron      = [];
 
-      this.spawnPlaceFirstPlayer = {"indexX" : 8, "indexY" : 24};
-      this.spawnPlaceSecondPlayer = {"indexX" : 16, "indexY" : 24};
+      this.fakeMap   = [];
+
+      this.spawnPlaceFirstPlayer    = {"indexX" : 8, "indexY" : 24};
+      this.spawnPlaceSecondPlayer   = {"indexX" : 16, "indexY" : 24};
       this.spawnPlaceEnemies = [
          {"indexX" : 0, "indexY" : 0},
          {"indexX" : 12, "indexY" : 0},
@@ -32,40 +39,94 @@ export default class AbstractLevel{
    }
 
    render(CX, Sprite){
-      this.Map.forEach(block => block.render(CX, Sprite));
+      [  ...this.Road, 
+         ...this.FlagPlace, 
+         ...this.Water, 
+         ...this.Iron, 
+         ...this.Brick, 
+         ...this.Grass
+      ]
+         .forEach(block => block.render(CX, Sprite));
    }
 
-   addToMap(block){
-      this.Map.push(block);
+   addToRoad(block){
+      this.Road.push(block);
+   }
+
+   addToFlagPlace(block){
+      this.FlagPlace.push(block);
+   }
+
+   addToWater(block){
+      this.Water.push(block);
+   }
+
+   addToIron(block){
+      this.Iron.push(block);
+   }
+
+   addToBrick(block){
+      this.Brick.push(block);
+   }
+
+   addToGrass(block){
+      this.Grass.push(block);
+   }
+
+   BlockTo(block){
+      if(block instanceof Road)
+         this.addToRoad(block);
+      else if(block instanceof FlagPlace)
+         this.addToFlagPlace(block);
+      else if(block instanceof Water)
+         this.addToWater(block);
+      else if(block instanceof Iron)
+         this.addToIron(block);
+      else if(block instanceof Brick)
+         this.addToBrick(block);
+      else if(block instanceof Grass);
+         this.addToGrass(block);
    }
 
    makeMap(){
       this.fakeMap.forEach((line, indexY) => line.forEach((sign, indexX) => {
-         switch(sign){
-            case 0:
-               this.addToMap(new Road(indexX, indexY));
-               break;
-            case '#':
-               this.addToMap(new Brick(indexX, indexY));
-               break;
-            case '&':
-               this.addToMap(new Iron(indexX, indexY));
-               break;
-            case 'f':
-               this.addToMap(new FlagPlace(indexX, indexY));
-               break;
-            case '@':
-               this.addToMap(new Grass(indexX, indexY));
-               break;
-            case '~':
-               this.addToMap(new Water(indexX, indexY));
-               break;
-         }
+         this.BlockTo(BlocksFactory.createBlock(sign, indexX, indexY));
       }));
    }
 
+   get Brick(){
+      return this.brick;
+   }
+
+   get Iron(){
+      return this.iron;
+   }
+
+   get Water(){
+      return this.water;
+   }
+
+   get Road(){
+      return this.road;
+   }
+
+   get FlagPlace(){
+      return this.flagPlace;
+   }
+
+   get Grass(){
+      return this.grass;
+   }
+
    get Map(){
-      return this.map;
+      return [ 
+         ...this.Road, 
+         ...this.FlagPlace, 
+         ...this.Water, 
+         ...this.Iron, 
+         ...this.Brick, 
+         ...this.Grass
+      ];
    }
 
    get Width(){
