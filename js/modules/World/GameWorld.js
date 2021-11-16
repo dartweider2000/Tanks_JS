@@ -1,24 +1,38 @@
 import Player from "../Actors/Player.js";
 import { FirstPlayerMoveKeys, SecondPlayerMoveKeys, FirstPlayerShotKey, SecondPlayerShotKey } from "../math.js";
+import MiddleTank from "../Tanks/MiddleTank.js";
+import LightTank from "../Tanks/LightTank.js";
 
 export default class GameWorld{
    constructor(level, firstPlayer = null, secondPlayer = null){
+      this.level = level;
+
       if(firstPlayer)
          this.firstPlayer = firstPlayer;
       else 
-         this.firstPlayer = new Player();
+         this.firstPlayer = new Player(new MiddleTank(
+            this.Level.SpawnPlaceFirstPlayer.indexX,
+            this.Level.SpawnPlaceFirstPlayer.indexY
+         ));
 
       if(secondPlayer)
          this.secondPlayer = secondPlayer;
-
-      this.level = level;
+      else
+         this.secondPlayer = new Player(new LightTank(
+            this.Level.SpawnPlaceSecondPlayer.indexX,
+            this.Level.SpawnPlaceSecondPlayer.indexY
+         ));
    }
 
    update(activeKeys){
       const keys = this.getPlayKeys(activeKeys);
 
-      //this.FirstPlayer.update(this, keys.firstPlayer);
-      //this.SecondPlayer.update(this, keys.secondPlayer);
+      this.FirstPlayer.update(this, keys.firstPlayer);
+      this.SecondPlayer.update(this, keys.secondPlayer);
+   }
+
+   canMove(object, newLeft, newTop){
+      return true;
    }
 
    getPlayKeys(activeKeys){

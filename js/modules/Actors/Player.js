@@ -1,6 +1,8 @@
+import { ButtleState } from "../math.js";
+
 export default class Player{
-   constructor(){
-      this.tank = null;
+   constructor(tank = null){
+      this.tank = tank;
 
       this.lives = 3;
       this.killes = 0;
@@ -11,8 +13,16 @@ export default class Player{
       this.Tank.setCoors(newLeft, newTop);
    }
 
-   update(gameWorld, keys){
+   update(World, keys){
+      if(keys.moveKey !== null || keys.shotKey)
+         this.Tank.update(World, keys);
 
+      if(this.Tank.isLive())
+         ;
+   }
+
+   render(CX, Sprite){
+      this.Tank.render(CX, Sprite);
    }
 
    get Tank(){

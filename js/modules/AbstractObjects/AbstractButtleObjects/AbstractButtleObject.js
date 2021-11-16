@@ -1,4 +1,5 @@
 import AbstractGameObject from "../AbstractGameObject.js";
+import { ButtleState } from "../../math.js";
 
 export default class AbstractButtleObject extends AbstractGameObject{
    constructor(indexX, indexY, vector){
@@ -7,6 +8,8 @@ export default class AbstractButtleObject extends AbstractGameObject{
       this.vector = vector;
       this.damage = null;
       this.speed = null;
+
+      this.state = ButtleState.LIVE;
    }
 
    move(){
@@ -18,8 +21,16 @@ export default class AbstractButtleObject extends AbstractGameObject{
       this.Top = newTop;
    }
 
+   isLive(){
+      return this.State == ButtleState.LIVE;
+   }
+
+   get State(){
+      return this.state;
+   }
+
    get Frame(){
-      return this.frame[this.vector];
+      return this.frame[this.Vector];
    }
 
    get Damage(){

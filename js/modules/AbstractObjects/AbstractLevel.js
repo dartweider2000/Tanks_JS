@@ -84,7 +84,7 @@ export default class AbstractLevel{
          this.addToIron(block);
       else if(block instanceof Brick)
          this.addToBrick(block);
-      else if(block instanceof Grass);
+      else if(block instanceof Grass)
          this.addToGrass(block);
    }
 
