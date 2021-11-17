@@ -22,8 +22,6 @@ export default class AbstractTank extends AbstractButtleObject{
             this.turn(moveKey);
 
          this.move(World);
-
-         console.log(...this.Frame);
       }
 
       if(shotKey)
@@ -55,8 +53,9 @@ export default class AbstractTank extends AbstractButtleObject{
          newTop = this.Top;
       }
 
-      if(World.canMove(this, newLeft, newTop))
-         this.setCoords(newLeft, newTop);
+      this.setCoords(...World.canMove(this, newLeft, newTop, newLeft + this.Size, newTop + this.Size));
+      // if(World.canMove(this, newLeft, newTop))
+      //    this.setCoords(newLeft, newTop);
       
    }
 

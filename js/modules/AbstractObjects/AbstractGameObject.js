@@ -44,6 +44,14 @@ export default class AbstractGameObject{
       this.y = y;
    }
 
+   get Right(){
+      return this.Left + this.Size;
+   }
+
+   get Bottom(){
+      return this.Top + this.Size;
+   }
+
    get X(){
       return this.Left / BLOCK_SIZE;
    }

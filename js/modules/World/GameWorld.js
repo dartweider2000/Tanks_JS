@@ -31,8 +31,37 @@ export default class GameWorld{
       this.SecondPlayer.update(this, keys.secondPlayer);
    }
 
-   canMove(object, newLeft, newTop){
-      return true;
+   biggestThan(first, second){
+      return first >= second;
+   }
+
+   LevelLimits(newLeft, newTop, newRight, newBottom){
+      return this.biggestThan(newLeft, this.Level.Left) && this.biggestThan(this.Level.Right, newRight) &&
+         this.biggestThan(newTop, this.Level.Top) && this.biggestThan(this.Level.Bottom, newBottom);
+   }
+
+   moreCorrectCoords(object, newLeft, newTop, newRight, newBottom){
+      if(this.biggestThan(this.Level.Left, newLeft))
+         newLeft = this.level.Left;
+      if(this.biggestThan(newRight, this.Level.Right))
+         newLeft = this.Level.Right - object.Size;
+      if(this.biggestThan(this.Level.Top, newTop))
+         newTop = this.Level.Top;
+      if(this.biggestThan(newBottom, this.Level.Bottom))
+         newTop = this.Level.Bottom - object.Size;
+
+      return [newLeft, newTop];
+   }
+
+   canMove(object, newLeft, newTop, newRight, newBottom){
+      if(!this.LevelLimits(newLeft, newTop, newRight, newBottom))
+         [newLeft, newTop] = this.moreCorrectCoords(object, newLeft, newTop, newRight, newBottom);
+      
+      else{
+
+      }
+
+      return [newLeft, newTop];
    }
 
    getPlayKeys(activeKeys){
