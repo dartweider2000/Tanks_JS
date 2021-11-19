@@ -7,4 +7,10 @@ export default class Road extends AbstractBlock{
 
       this.frame = [17 * TANK_SIZE, 0, this.Size, this.Size];
    }
+
+   contur(CX){
+      CX.strokeStyle = 'white';
+      CX.lineWidth = 0.4;
+      CX.strokeRect(this.Left, this.Top, this.Size, this.Size);
+   }
 }

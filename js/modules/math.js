@@ -1,5 +1,5 @@
 export { TANK_SIZE, FLAG_SIZE, BLOCK_SIZE, SHOT_SIZE, Mode, Vector, Key, BrickState, AnimationFrame, FirstPlayerMoveKeys, 
-   FirstPlayerShotKey, SecondPlayerMoveKeys, SecondPlayerShotKey, ButtleState };
+   FirstPlayerShotKey, SecondPlayerMoveKeys, SecondPlayerShotKey, ButtleState, Gor, Ver, LeftUp, RightDown };
 
 const TANK_SIZE = 16;
 
@@ -58,3 +58,11 @@ const FirstPlayerShotKey = 'ControlRight';
 const SecondPlayerMoveKeys = ['KeyW', 'KeyS', 'KeyA', 'KeyD'];
 
 const SecondPlayerShotKey = 'Space';
+
+const Ver = [Vector.UP, Vector.DOWN];
+
+const Gor = [Vector.LEFT, Vector.RIGHT];
+
+const LeftUp = [Vector.LEFT, Vector.UP];
+
+const RightDown = [Vector.RIGHT, Vector.DOWN];

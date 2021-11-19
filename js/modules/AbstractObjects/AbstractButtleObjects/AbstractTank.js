@@ -1,5 +1,5 @@
 import AbstractButtleObject from "./AbstractButtleObject.js";
-import { Vector, TANK_SIZE, AnimationFrame, ButtleState } from "../../math.js";
+import { Vector, TANK_SIZE, AnimationFrame, ButtleState, Gor, Ver } from "../../math.js";
 
 export default class AbstractTank extends AbstractButtleObject{
    constructor(indexX, indexY, vector = Vector.UP){
@@ -14,12 +14,19 @@ export default class AbstractTank extends AbstractButtleObject{
       this.size = TANK_SIZE;
    }
 
+   changeVector(newVector){
+      this.vector = newVector;
+   }
+
    update(World, {moveKey, shotKey}){
       if(moveKey !== null){
          this.setAnimationFrame();
 
-         if(this.Vector != moveKey)
+         if(Gor.includes(this.Vector) && Ver.includes(moveKey) || Gor.includes(moveKey) && Ver.includes(this.Vector)){
+            this.setCoords(...World.turnToLine(this, moveKey));
             this.turn(moveKey);
+         }else
+            this,this.changeVector(moveKey);
 
          this.move(World);
       }
