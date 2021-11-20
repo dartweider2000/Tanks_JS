@@ -12,6 +12,8 @@ export default class GameView{
 
       //World.Level.Road.forEach(block => block.contur(CX));
 
+      World.Shots.render(CX, Sprite);
+
       World.FirstPlayer.render(CX, Sprite);
       World.SecondPlayer.render(CX, Sprite);
 

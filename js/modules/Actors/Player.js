@@ -1,4 +1,4 @@
-import { ButtleState } from "../math.js";
+import { TankState } from "../math.js";
 
 export default class Player{
    constructor(tank = null){

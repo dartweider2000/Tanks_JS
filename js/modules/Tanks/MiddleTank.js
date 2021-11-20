@@ -1,11 +1,13 @@
 import AbstractTank from "../AbstractObjects/AbstractButtleObjects/AbstractTank.js";
 import { TANK_SIZE, AnimationFrame } from "../math.js";
+import MediumTankShot from "../Shots/MediumTankShot.js";
 
 export default class MiddleTank extends AbstractTank{
    constructor(indexX, indexY){
       super(indexX, indexY);
 
       this.speed = 1;
+      this.coolDown = 1000;
 
       this.frame = [
          [0 * this.Size, 0, this.Size, this.Size], //UP
@@ -17,5 +19,9 @@ export default class MiddleTank extends AbstractTank{
          [2 * this.Size + this.Size, 0, this.Size, this.Size], //LEFT AnimationFrame
          [6 * this.Size + this.Size, 0, this.Size, this.Size], //RIGHT AnimationFrame
       ]
+   }
+
+   shot(World){
+      World.addShot(new MediumTankShot(...this.getShotCoords(), this.Vector));
    }
 }

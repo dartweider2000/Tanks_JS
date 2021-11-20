@@ -2,9 +2,12 @@ import Player from "../Actors/Player.js";
 import { FirstPlayerMoveKeys, SecondPlayerMoveKeys, FirstPlayerShotKey, SecondPlayerShotKey, Vector, Gor, Ver, BLOCK_SIZE, LeftUp, RightDown, TANK_SIZE } from "../math.js";
 import MiddleTank from "../Tanks/MiddleTank.js";
 import LightTank from "../Tanks/LightTank.js";
+import Shots from "../Shots/Shots.js";
+import AbstractTank from "../AbstractObjects/AbstractButtleObjects/AbstractTank.js";
 
 export default class GameWorld{
    constructor(level, firstPlayer = null, secondPlayer = null){
+      this.shots = new Shots();
       this.level = level;
 
       if(firstPlayer)
@@ -27,8 +30,16 @@ export default class GameWorld{
    update(activeKeys){
       const keys = this.getPlayKeys(activeKeys);
 
+      this.Shots.update(this);
+
       this.FirstPlayer.update(this, keys.firstPlayer);
       this.SecondPlayer.update(this, keys.secondPlayer);
+
+      //this.Shots.update(this);
+   }
+
+   addShot(shot){
+      this.Shots.add(shot);
    }
 
    biggestThan(first, second){
@@ -56,15 +67,15 @@ export default class GameWorld{
          this.biggestThan(newTop, this.Level.Top) && this.biggestThan(this.Level.Bottom, newBottom);
    }
 
-   moreCorrectCoords(object, newLeft, newTop, newRight, newBottom){
-      if(this.biggestThan(this.Level.Left, newLeft))
-         newLeft = this.level.Left;
-      if(this.biggestThan(newRight, this.Level.Right))
-         newLeft = this.Level.Right - object.Size;
-      if(this.biggestThan(this.Level.Top, newTop))
-         newTop = this.Level.Top;
-      if(this.biggestThan(newBottom, this.Level.Bottom))
-         newTop = this.Level.Bottom - object.Size;
+   moreCorrectCoords(object, block, newLeft, newTop, newRight, newBottom){
+      if(this.biggestThan(block.Left, newLeft))
+         newLeft = block.Left;
+      if(this.biggestThan(newRight, block.Right))
+         newLeft = block.Right - object.Size;
+      if(this.biggestThan(block.Top, newTop))
+         newTop = block.Top;
+      if(this.biggestThan(newBottom, block.Bottom))
+         newTop = block.Bottom - object.Size;
 
       return [newLeft, newTop];
    }
@@ -105,9 +116,9 @@ export default class GameWorld{
       }, []);
    }
 
-   canMove(object, newLeft, newTop, newRight, newBottom){
+   canMoveTank(object, newLeft, newTop, newRight, newBottom){
       if(!this.LevelLimits(newLeft, newTop, newRight, newBottom))
-         [newLeft, newTop] = this.moreCorrectCoords(object, newLeft, newTop, newRight, newBottom);
+         [newLeft, newTop] = this.moreCorrectCoords(object, this.Level, newLeft, newTop, newRight, newBottom);
       else{
          let blocks = this.blocksCollision(object, newLeft, newTop, newRight, newBottom);
 
@@ -120,6 +131,26 @@ export default class GameWorld{
       }
 
       return [newLeft, newTop];
+   }
+
+   canMoveShot(object, newLeft, newTop, newRight, newBottom){
+      if(!this.LevelLimits(newLeft, newTop, newRight, newBottom)){
+         [object.Left, object.Top] = this.moreCorrectCoords(object, this.Level, object.Left, object.Top, object.Right, object.Bottom);
+         return false;   
+      }else{
+         let target = this.blocksCollision(object, newLeft, newTop, newRight, newBottom);
+
+         //console.log(target);
+
+         if(target.length > 0){
+           // target.forEach(target => {
+            //   [object.Left, object.Top] = this.moreCorrectCoords(object, target, object.Left, object.Top, object.Right, object.Bottom);
+            //});
+
+            return false;
+         }else
+            return true;
+      }
    }
 
    lookForlineStart(mainLine, coord){
@@ -200,5 +231,9 @@ export default class GameWorld{
 
    get Level(){
       return this.level;
+   }
+
+   get Shots(){
+      return this.shots;
    }
 }

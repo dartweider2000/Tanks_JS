@@ -1,5 +1,5 @@
 import AbstractGameObject from "../AbstractGameObject.js";
-import { ButtleState } from "../../math.js";
+import { TankState } from "../../math.js";
 
 export default class AbstractButtleObject extends AbstractGameObject{
    constructor(indexX, indexY, vector){
@@ -9,7 +9,10 @@ export default class AbstractButtleObject extends AbstractGameObject{
       this.damage = null;
       this.speed = null;
 
-      this.state = ButtleState.LIVE;
+      this.state = null;
+
+      this.boomFrame = [];
+      this.boomAnimationFrame = 0;
    }
 
    move(){
@@ -22,11 +25,15 @@ export default class AbstractButtleObject extends AbstractGameObject{
    }
 
    isLive(){
-      return this.State == ButtleState.LIVE;
+      return this.State == TankState.LIVE;
    }
 
    get State(){
       return this.state;
+   }
+
+   set State(state){
+      this.state = state;
    }
 
    get Frame(){
@@ -51,5 +58,13 @@ export default class AbstractButtleObject extends AbstractGameObject{
 
    get Y(){
       return this.Top;
+   }
+
+   get BoomAnimationFrame(){
+      return this.boomAnimationFrame;
+   }
+
+   set BoomAnimationFrame(boomAnimationFrame){
+      this.boomAnimationFrame = boomAnimationFrame;
    }
 }

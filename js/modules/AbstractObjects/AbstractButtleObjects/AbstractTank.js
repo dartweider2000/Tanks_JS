@@ -1,5 +1,5 @@
 import AbstractButtleObject from "./AbstractButtleObject.js";
-import { Vector, TANK_SIZE, AnimationFrame, ButtleState, Gor, Ver } from "../../math.js";
+import { Vector, TANK_SIZE, AnimationFrame, TankState, Gor, Ver, SHOT_SIZE } from "../../math.js";
 
 export default class AbstractTank extends AbstractButtleObject{
    constructor(indexX, indexY, vector = Vector.UP){
@@ -7,11 +7,17 @@ export default class AbstractTank extends AbstractButtleObject{
 
       this.healthPoint = null;
       this.coolDown = null;
-      this.canShot = false;
+      this.canShot = true;
 
       this.animationFrame = AnimationFrame.FIRST;
+      this.state = TankState.BORN;
 
       this.size = TANK_SIZE;
+   }
+
+   get Frame(){
+      //if(this.State == TankState.BORN)
+      //   return 
    }
 
    changeVector(newVector){
@@ -31,8 +37,34 @@ export default class AbstractTank extends AbstractButtleObject{
          this.move(World);
       }
 
-      if(shotKey)
-         this.shot();
+      if(shotKey && this.CanShot){
+         this.shot(World);
+
+         this.reload();
+      }
+
+      //console.log(this.CanShot);
+         
+   }
+
+   getShotCoords(){
+      let shotLeft, shotTop;
+
+      if(this.Vector == Vector.UP){
+         shotLeft = this.Left + this.Size / 2 - SHOT_SIZE / 2;
+         shotTop = this.Top;
+      }else if(this.Vector == Vector.DOWN){
+         shotLeft = this.Left + this.Size / 2 - SHOT_SIZE / 2;
+         shotTop = this.Bottom - SHOT_SIZE;
+      }else if(this.Vector == Vector.LEFT){
+         shotLeft = this.Left;
+         shotTop = this.Top + this.Size / 2 - SHOT_SIZE / 2;
+      }else if(this.Vector == Vector.RIGHT){
+         shotLeft = this.Right - SHOT_SIZE;
+         shotTop = this.Top + this.Size / 2 - SHOT_SIZE / 2;
+      }
+
+      return [shotLeft, shotTop];
    }
 
    shot(){
@@ -43,31 +75,31 @@ export default class AbstractTank extends AbstractButtleObject{
       let newLeft = 0, newTop = 0; 
 
       if(this.Vector == Vector.UP){
-         //World.canMove(this, this.Left, this.Top - this.Speed);
          newLeft = this.Left;
          newTop = this.Top - this.Speed;
       }else if(this.Vector == Vector.DOWN){
-         //World.canMove(this, this.Left, this.Top + this.Speed);
          newLeft = this.Left;
          newTop = this.Top + this.Speed;
       }else if(this.Vector == Vector.LEFT){
-         //World.canMove(this, this.Left - this.Speed, this.Top);
          newLeft = this.Left - this.Speed;
          newTop = this.Top;
       }else if(this.Vector == Vector.RIGHT){
-         //World.canMove(this, this.Left + this.Speed, this.Top);
          newLeft = this.Left + this.Speed;
          newTop = this.Top;
       }
 
-      this.setCoords(...World.canMove(this, newLeft, newTop, newLeft + this.Size, newTop + this.Size));
-      // if(World.canMove(this, newLeft, newTop))
-      //    this.setCoords(newLeft, newTop);
-      
+      this.setCoords(...World.canMoveTank(this, newLeft, newTop, newLeft + this.Size, newTop + this.Size)); 
    }
 
    async reload(){
-
+      return new Promise(resolve => {
+         this.CanShot = false;
+         setTimeout(() => {
+            this.CanShot = true;
+            //console.log('!!');
+            resolve();
+         }, this.CD);
+      });
    }
 
    turn(newVector){
