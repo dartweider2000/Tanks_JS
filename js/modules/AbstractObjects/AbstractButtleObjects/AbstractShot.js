@@ -2,7 +2,7 @@ import AbstractButtleObject from "./AbstractButtleObject.js";
 import { ShotState, SHOT_SIZE, TankState, TANK_SIZE, Vector } from "../../math.js";
 
 export default class AbstractShot extends AbstractButtleObject{
-   constructor(x, y, vector){
+   constructor(x, y, vector, owner){
       super(null, null, vector);
 
       this.x = x;
@@ -23,6 +23,12 @@ export default class AbstractShot extends AbstractButtleObject{
          [17 * TANK_SIZE, 8 * TANK_SIZE, TANK_SIZE, TANK_SIZE],
          [18 * TANK_SIZE, 8 * TANK_SIZE, TANK_SIZE, TANK_SIZE],
       ]
+
+      this.owner = owner;
+   }
+
+   get Owner(){
+      return this.owner;
    }
 
    get Frame(){
@@ -41,10 +47,11 @@ export default class AbstractShot extends AbstractButtleObject{
 
    drawBoom(CX, Sprite){
       CX.drawImage(Sprite, ...this.Frame,
-         this.Left - TANK_SIZE / 4, this.Top - TANK_SIZE / 4, TANK_SIZE, TANK_SIZE);
+         this.Left - TANK_SIZE / 3, this.Top - TANK_SIZE / 3, TANK_SIZE, TANK_SIZE);
    }
 
    async doBoomFrame(){
+      const ms = 60;
       const wait = async ms => {
          return new Promise(resolve => {
             setTimeout(resolve, ms);
@@ -52,22 +59,11 @@ export default class AbstractShot extends AbstractButtleObject{
       };
 
       return new Promise(async resolve => {
-         await wait(80);
-
-        // console.log('!!');
-
+         await wait(ms);
          this.BoomAnimationFrame++;
-
-         await wait(80);
-
-         //console.log('!!');
-
+         await wait(ms);
          this.BoomAnimationFrame++;
-
-         await wait(80);
-
-         //console.log('!!');
-
+         await wait(ms);
          this.State = ShotState.DEATH;
          resolve();
       });
@@ -80,7 +76,6 @@ export default class AbstractShot extends AbstractButtleObject{
    update(World){
       if(this.State == ShotState.LIVE){
          this.move(World);
-         //console.log('!');
       }
    }
 

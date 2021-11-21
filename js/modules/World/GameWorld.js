@@ -50,10 +50,23 @@ export default class GameWorld{
       return first > second;
    }
 
+   isSame(first, second){
+      return first == second;
+   }
+
    pointInside(pointLeft, pointTop, newLeft, newTop, newRight, newBottom){
       return this.biggestThan_2(pointLeft, newLeft) && this.biggestThan_2(newRight, pointLeft) &&
          this.biggestThan_2(pointTop, newTop) && this.biggestThan_2(newBottom, pointTop);
    }
+
+
+   tankInside(tank, newLeft, newTop, newRight, newBottom){
+      return this.pointInside(newLeft, newTop, tank.Left, tank.Top, tank.Right, tank.Bottom) || 
+         this.pointInside(newRight, newTop, tank.Left, tank.Top, tank.Right, tank.Bottom) ||
+         this.pointInside(newLeft, newBottom, tank.Left, tank.Top, tank.Right, tank.Bottom) || 
+         this.pointInside(newRight, newBottom, tank.Left, tank.Top, tank.Right, tank.Bottom);
+   }
+
 
    inside(block, newLeft, newTop, newRight, newBottom){
       return this.pointInside(block.Left, block.Top, newLeft, newTop, newRight, newBottom) || 
@@ -62,9 +75,9 @@ export default class GameWorld{
          this.pointInside(block.Right, block.Bottom, newLeft, newTop, newRight, newBottom);
    }
 
-   LevelLimits(newLeft, newTop, newRight, newBottom){
-      return this.biggestThan(newLeft, this.Level.Left) && this.biggestThan(this.Level.Right, newRight) &&
-         this.biggestThan(newTop, this.Level.Top) && this.biggestThan(this.Level.Bottom, newBottom);
+   Limits(block, newLeft, newTop, newRight, newBottom){
+      return this.biggestThan(newLeft, block.Left) && this.biggestThan(block.Right, newRight) &&
+         this.biggestThan(newTop, block.Top) && this.biggestThan(block.Bottom, newBottom);
    }
 
    moreCorrectCoords(object, block, newLeft, newTop, newRight, newBottom){
@@ -103,28 +116,77 @@ export default class GameWorld{
             newLeft = block.Right;
       }
 
+      if(this.klinch(block, newLeft, newTop, newRight, newBottom)){
+         if(object.Vector == Vector.UP)
+            newTop = block.Bottom;
+         else if(object.Vector == Vector.DOWN)
+            newTop = block.Top - object.Size;
+         else if(object.Vector == Vector.LEFT)
+            newLeft = block.Right;
+         else if(object.Vector == Vector.RIGHT)
+            newLeft = block.Left - object.Size;
+      }
+
       return [newLeft, newTop];
+   }
+   klinch(tank, newLeft, newTop, newRight, newBottom){
+      if(
+         this.isSame(newLeft, tank.Left) && this.isSame(newRight, tank.Right) && 
+         (this.biggestThan_2(newBottom, tank.Top) && this.biggestThan_2(tank.Bottom, newTop) || 
+         this.biggestThan_2(tank.Bottom, newTop) && this.biggestThan_2(newBottom, tank.Top)) 
+         ||
+         this.isSame(newTop, tank.Top) && this.isSame(newBottom, tank.Bottom) && 
+         (this.biggestThan_2(newRight, tank.Left) && this.biggestThan_2(tank.Right, newLeft) || 
+         this.biggestThan_2(tank.Right, newLeft) && this.biggestThan_2(newRight, tank.Left))
+      )
+         return true;
+      else
+         return false;
+   }
+
+   tanksCollision(object, newLeft, newTop, newRight, newBottom){
+      return [this.FirstPlayer.Tank, this.SecondPlayer.Tank].reduce((result, tank) => {
+         if(this.tankInside(tank, newLeft, newTop, newRight, newBottom) && tank !== object)
+            result.push(tank);
+         
+         if(this.klinch(tank, newLeft, newTop, newRight, newBottom) && tank !== object)
+            result.push(tank);
+
+         return result;
+      }, []);
    }
 
    blocksCollision(object, newLeft, newTop, newRight, newBottom){
       return [...this.Level.Brick, ...this.Level.Iron, ...this.Level.Water].reduce((result, block) => {
-         if(this.inside(block, newLeft, newTop, newRight, newBottom)){
+         if(this.inside(block, newLeft, newTop, newRight, newBottom))
             result.push(block);
-         }
 
          return result;
       }, []);
    }
 
    canMoveTank(object, newLeft, newTop, newRight, newBottom){
-      if(!this.LevelLimits(newLeft, newTop, newRight, newBottom))
+      if(!this.Limits(this.Level, newLeft, newTop, newRight, newBottom))
          [newLeft, newTop] = this.moreCorrectCoords(object, this.Level, newLeft, newTop, newRight, newBottom);
       else{
          let blocks = this.blocksCollision(object, newLeft, newTop, newRight, newBottom);
 
+
+         let tanks = this.tanksCollision(object, newLeft, newTop, newRight, newBottom);
+
+
+         console.log(tanks);
+
          if(blocks.length)
             [newLeft, newTop] = blocks.reduce((result, block) => {
                result = this.moreCorrectCoordsBlocks(object, block, newLeft, newTop, newRight, newBottom);
+
+               return result;
+            }, [newLeft, newTop]);
+
+         if(tanks.length)
+            [newLeft, newTop] = tanks.reduce((result, tank) => {
+               result = this.moreCorrectCoordsBlocks(object, tank, newLeft, newTop, newRight, newBottom);
 
                return result;
             }, [newLeft, newTop]);
@@ -134,19 +196,22 @@ export default class GameWorld{
    }
 
    canMoveShot(object, newLeft, newTop, newRight, newBottom){
-      if(!this.LevelLimits(newLeft, newTop, newRight, newBottom)){
+      if(!this.Limits(this.Level, newLeft, newTop, newRight, newBottom)){
          [object.Left, object.Top] = this.moreCorrectCoords(object, this.Level, object.Left, object.Top, object.Right, object.Bottom);
          return false;   
       }else{
-         let target = this.blocksCollision(object, newLeft, newTop, newRight, newBottom);
+         let targetBlock = this.blocksCollision(object, newLeft, newTop, newRight, newBottom);
+         let targetTank = this.tanksCollision(object, newLeft, newTop, newRight, newBottom);
 
-         //console.log(target);
+         if(targetTank.length)
+            targetTank = targetTank.reduce((target, tank) => {
+               if(tank !== object.Owner)
+                  target.push(tank);
 
-         if(target.length > 0){
-           // target.forEach(target => {
-            //   [object.Left, object.Top] = this.moreCorrectCoords(object, target, object.Left, object.Top, object.Right, object.Bottom);
-            //});
+               return target;
+            }, []);
 
+         if(targetBlock.length || targetTank.length){
             return false;
          }else
             return true;

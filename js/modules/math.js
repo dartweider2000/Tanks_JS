@@ -61,7 +61,7 @@ const AnimationFrame = {
 
 const FirstPlayerMoveKeys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
 
-const FirstPlayerShotKey = 'ControlRight';
+const FirstPlayerShotKey = 'ShiftRight';
 
 const SecondPlayerMoveKeys = ['KeyW', 'KeyS', 'KeyA', 'KeyD'];
 

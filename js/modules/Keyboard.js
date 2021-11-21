@@ -19,6 +19,6 @@ export default class Keyboard{
 
    preventDefault(event){
       if(event.code == 'KeyS' && event.ctrlKey)
-         event.preventDefault();
+         event.preventDefault(); 
    }
 }

@@ -22,6 +22,6 @@ export default class MiddleTank extends AbstractTank{
    }
 
    shot(World){
-      World.addShot(new MediumTankShot(...this.getShotCoords(), this.Vector));
+      World.addShot(new MediumTankShot(...this.getShotCoords(), this.Vector, this));
    }
 }
