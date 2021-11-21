@@ -164,18 +164,21 @@ export default class GameWorld{
          return result;
       }, []);
    }
+   shotsCollision(object, newLeft, newTop, newRight, newBottom){
+      return this.Shots.Shots.reduce((result, shot) => {
+         if(this.klinch(shot,newLeft, newTop, newRight, newBottom) && shot !== object)
+            result.push(shot);
+
+         return result;
+      }, []);
+   }
 
    canMoveTank(object, newLeft, newTop, newRight, newBottom){
       if(!this.Limits(this.Level, newLeft, newTop, newRight, newBottom))
          [newLeft, newTop] = this.moreCorrectCoords(object, this.Level, newLeft, newTop, newRight, newBottom);
       else{
          let blocks = this.blocksCollision(object, newLeft, newTop, newRight, newBottom);
-
-
          let tanks = this.tanksCollision(object, newLeft, newTop, newRight, newBottom);
-
-
-         console.log(tanks);
 
          if(blocks.length)
             [newLeft, newTop] = blocks.reduce((result, block) => {
@@ -202,6 +205,7 @@ export default class GameWorld{
       }else{
          let targetBlock = this.blocksCollision(object, newLeft, newTop, newRight, newBottom);
          let targetTank = this.tanksCollision(object, newLeft, newTop, newRight, newBottom);
+         let targetShot = this.shotsCollision(object, newLeft, newTop, newRight, newBottom);
 
          if(targetTank.length)
             targetTank = targetTank.reduce((target, tank) => {
@@ -211,7 +215,7 @@ export default class GameWorld{
                return target;
             }, []);
 
-         if(targetBlock.length || targetTank.length){
+         if(targetBlock.length || targetTank.length || targetShot.length){
             return false;
          }else
             return true;

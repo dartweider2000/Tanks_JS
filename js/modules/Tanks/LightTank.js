@@ -7,7 +7,7 @@ export default class LightTank extends AbstractTank{
       super(indexX, indexY);
 
       this.speed = 2;
-      this.coolDown = 1500;
+      this.coolDown = 500;
 
       this.frame = [
          [0 * this.Size, 13 * this.Size, this.Size, this.Size], //UP

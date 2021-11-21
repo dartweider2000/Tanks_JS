@@ -7,7 +7,7 @@ export default class MiddleTank extends AbstractTank{
       super(indexX, indexY);
 
       this.speed = 1;
-      this.coolDown = 1000;
+      this.coolDown = 700;
 
       this.frame = [
          [0 * this.Size, 0, this.Size, this.Size], //UP
