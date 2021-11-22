@@ -1,4 +1,4 @@
-import { BLOCK_SIZE } from "../math.js";
+import { BLOCK_SIZE, BrickState } from "../math.js";
 import BlocksFactory from "../Blocks/BlocksFactory.js";
 import Brick from "../Blocks/Brick.js";
 import Grass from "../Blocks/Grass.js";
@@ -36,6 +36,20 @@ export default class AbstractLevel{
          {"indexX" : 13, "indexY" : 24},
          {"indexX" : 13, "indexY" : 25}
       ];
+   }
+
+   update(){
+      this.Brick = this.Brick.reduce((result, brick) => {
+         if(brick.State == BrickState.DEATH){
+            this.addToRoad(new Road(brick.X, brick.Y));
+
+            return result;
+         }
+
+         result.push(brick);
+
+         return result;
+      }, []);
    }
 
    render(CX, Sprite){
@@ -92,6 +106,10 @@ export default class AbstractLevel{
       this.fakeMap.forEach((line, indexY) => line.forEach((sign, indexX) => {
          this.BlockTo(BlocksFactory.createBlock(sign, indexX, indexY));
       }));
+   }
+
+   set Brick(brick){
+      this.brick = brick;
    }
 
    get Brick(){

@@ -4,11 +4,13 @@ import MiddleTank from "../Tanks/MiddleTank.js";
 import LightTank from "../Tanks/LightTank.js";
 import Shots from "../Shots/Shots.js";
 import AbstractTank from "../AbstractObjects/AbstractButtleObjects/AbstractTank.js";
+import BlocksDestroy from "./BlocksDestroy.js";
 
 export default class GameWorld{
    constructor(level, firstPlayer = null, secondPlayer = null){
       this.shots = new Shots();
       this.level = level;
+      this.blocksDestroy = new BlocksDestroy();
 
       if(firstPlayer)
          this.firstPlayer = firstPlayer;
@@ -31,6 +33,8 @@ export default class GameWorld{
       const keys = this.getPlayKeys(activeKeys);
 
       this.Shots.update(this);
+
+      this.Level.update();
 
       this.FirstPlayer.update(this, keys.firstPlayer);
       this.SecondPlayer.update(this, keys.secondPlayer);
@@ -207,6 +211,8 @@ export default class GameWorld{
          let targetTank = this.tanksCollision(object, newLeft, newTop, newRight, newBottom);
          let targetShot = this.shotsCollision(object, newLeft, newTop, newRight, newBottom);
 
+         //console.log(targetBlock);
+
          if(targetTank.length)
             targetTank = targetTank.reduce((target, tank) => {
                if(tank !== object.Owner)
@@ -214,6 +220,9 @@ export default class GameWorld{
 
                return target;
             }, []);
+
+         if(targetBlock.length)
+            this.brickDestroy(object, targetBlock);
 
          if(targetBlock.length || targetTank.length || targetShot.length){
             return false;
@@ -290,6 +299,10 @@ export default class GameWorld{
       return keys;
    }
 
+   brickDestroy(Shot, blocks){
+      this.BlocksDestroy.destroy(Shot, blocks);
+   }
+
    get FirstPlayer(){
       return this.firstPlayer;
    }
@@ -304,5 +317,9 @@ export default class GameWorld{
 
    get Shots(){
       return this.shots;
+   }
+
+   get BlocksDestroy(){
+      return this.blocksDestroy;
    }
 }
