@@ -1,13 +1,8 @@
-import AbstractTank from "../AbstractObjects/AbstractButtleObjects/AbstractTank.js";
-import { TANK_SIZE, AnimationFrame } from "../math.js";
-import LightTankShot from "../Shots/LightTankShot.js";
+import LightTank from "../Base/LightTank.js";
 
-export default class LightTank extends AbstractTank{
-   constructor(indexX, indexY){
-      super(indexX, indexY);
-
-      this.speed = 2;
-      this.coolDown = 500;
+export default class SecondPlayerLightTank extends LightTank{
+   constructor(indexX, indexY, vector){
+      super(indexX, indexY, vector);
 
       this.frame = [
          [0 * this.Size, 13 * this.Size, this.Size, this.Size], //UP
@@ -18,10 +13,6 @@ export default class LightTank extends AbstractTank{
          [4 * this.Size + this.Size, 13 * this.Size, this.Size, this.Size], //DOWN Animationframe
          [2 * this.Size + this.Size, 13 * this.Size, this.Size, this.Size], //LEFT Animationframe
          [6 * this.Size + this.Size, 13 * this.Size, this.Size, this.Size], //RIGHT Animationframe
-      ]
-   }
-
-   shot(World){
-      World.addShot(new LightTankShot(...this.getShotCoords(), this.Vector, this));
+      ];
    }
 }

@@ -1,7 +1,7 @@
 import Player from "../Actors/Player.js";
 import { FirstPlayerMoveKeys, SecondPlayerMoveKeys, FirstPlayerShotKey, SecondPlayerShotKey, Vector, Gor, Ver, BLOCK_SIZE, LeftUp, RightDown, TANK_SIZE } from "../math.js";
-import MiddleTank from "../Tanks/MiddleTank.js";
-import LightTank from "../Tanks/LightTank.js";
+import FirstPlayerHeavyTank from "../Tanks/FirstPlayerTanks/FirstPlayerHeavyTank.js";
+import SecondPlayerPTTank from "../Tanks/SecondPlayerTanks/SecondPlayerPTTank.js";
 import Shots from "../Shots/Shots.js";
 import AbstractTank from "../AbstractObjects/AbstractButtleObjects/AbstractTank.js";
 import BlocksDestroy from "./BlocksDestroy.js";
@@ -15,7 +15,7 @@ export default class GameWorld{
       if(firstPlayer)
          this.firstPlayer = firstPlayer;
       else 
-         this.firstPlayer = new Player(new MiddleTank(
+         this.firstPlayer = new Player(new FirstPlayerHeavyTank(
             this.Level.SpawnPlaceFirstPlayer.indexX,
             this.Level.SpawnPlaceFirstPlayer.indexY
          ));
@@ -23,7 +23,7 @@ export default class GameWorld{
       if(secondPlayer)
          this.secondPlayer = secondPlayer;
       else
-         this.secondPlayer = new Player(new LightTank(
+         this.secondPlayer = new Player(new SecondPlayerPTTank(
             this.Level.SpawnPlaceSecondPlayer.indexX,
             this.Level.SpawnPlaceSecondPlayer.indexY
          ));
